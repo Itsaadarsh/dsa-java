@@ -14,9 +14,11 @@ public class LinkedList {
 
     private Node first;
     private Node last;
+    private int count = 0;
 
     public void addLast(int item) {
         var node = new Node(item);
+        count++;
         if (isEmpty()) {
             first = last = node;
         } else {
@@ -27,6 +29,7 @@ public class LinkedList {
 
     public void addFirst(int item) {
         var node = new Node(item);
+        count++;
         if (isEmpty()) {
             first = last = node;
         } else {
@@ -68,6 +71,7 @@ public class LinkedList {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
+        count--;
         if (first == last) {
             first = last = null;
             return;
@@ -75,6 +79,57 @@ public class LinkedList {
         var temp = first.next;
         first.next = null;
         first = temp;
-
     }
+
+    public void removeLast() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        count--;
+        if (first == last) {
+            first = last = null;
+            return;
+        }
+        var temp = first;
+        while (temp.next.next != null) {
+            temp = temp.next;
+        }
+        last = temp;
+        last.next = null;
+    }
+
+    public int size() {
+        return count;
+    }
+
+    public int[] toArray() {
+        var array = new int[count];
+        var temp = first;
+        int index = 0;
+        while (temp != null) {
+            array[index] = temp.value;
+            index++;
+            temp = temp.next;
+        }
+        return array;
+    }
+
+    public void reverse() {
+        if (isEmpty()) {
+            return;
+        }
+        var current = first.next;
+        var previous = first;
+        while (current != null) {
+            var next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
+        }
+
+        last = first;
+        last.next = null;
+        first = previous;
+    }
+
 }
